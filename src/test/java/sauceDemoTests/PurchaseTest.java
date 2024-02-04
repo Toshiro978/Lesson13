@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import pages.*;
 
 public class PurchaseTest {
-
+    private final String homeUrl =  "https://www.saucedemo.com/";
     LoginPage loginPage = new LoginPage();
     ProductPage productPage = new ProductPage();
     CartPage cartPage = new CartPage();
@@ -22,12 +22,14 @@ public class PurchaseTest {
 
     @BeforeTest
     public void setUpBrowser() {
+
         Browser.setBrowser();
+
     }
 
     @Test
     public void LoginTest(){
-        loginPage.openLoginPage();
+        open(homeUrl);
         loginPage.setLogin("standard_user");
         loginPage.setPassword("secret_sauce");
         loginPage.clickLoginButton();
@@ -68,5 +70,8 @@ public class PurchaseTest {
     public void FinalPageTest(){
         checkoutPage.clickFinishButton();
         finishPage.waitForCompletion("Thank you for your order!");
+        sleep(5000);
+        closeWebDriver();
     }
+
 }
