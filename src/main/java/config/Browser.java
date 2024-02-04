@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import com.google.common.collect.ImmutableMap;
@@ -21,12 +22,34 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class Browser {
 
-    public static void configSelenide(){
+    public static void configSelenoid() {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setBrowserName("chrome"); // Встановлення браузера, наприклад, Chrome
+        capabilities.setCapability("selenoid:options",
+                ImmutableMap.of("enableVNC", true, "enableVideo", false));
+
+        //Proxy
+        capabilities.setCapability("proxy", ImmutableMap.of(
+                "proxyType", "manual",
+                "httpProxy", "http://192.168.0.161:4444"
+        ));
+
+        URL selenoidURL = null;
+        try {
+            selenoidURL = new URL("http://localhost:4444/wd/hub");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        WebDriver driver = new RemoteWebDriver(selenoidURL, capabilities);
+        WebDriverRunner.setWebDriver(driver);
+        // driver.get("https://www.saucedemo.com/");
 
     }
+
     public static void setBrowser() {
         var selenideConfig = new SelenideConfig();
-       // selenideConfig.remote("http://localhost:4444/wd/hub"); // Use for Selenoid
+        // selenideConfig.remote("http://localhost:4444/wd/hub"); // Use for Selenoid
         selenideConfig.browser("chrome");
         selenideConfig.browserSize("1280x720");
         selenideConfig.pageLoadStrategy("normal");
@@ -36,30 +59,8 @@ public class Browser {
         selenideConfig.timeout(10000);
         selenideConfig.textCheck(TextCheck.FULL_TEXT);
 
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName("chrome"); // Встановлення браузера, наприклад, Chrome
-        capabilities.setVersion("latest"); // Встановлення версії браузера
-        capabilities.setCapability("enableVNC", true); // Увімкнення функції VNC
-        capabilities.setCapability("enableVideo", false); // Вимкнення запису відео
-        capabilities.setCapability("selenoid:options",
-                ImmutableMap.of("enableVNC", true, "videoName", "some.mp4"));
-        //Proxy
-        selenideConfig.proxyEnabled(true);
-        selenideConfig.proxyHost(new NetworkUtils().getNonLoopbackAddressOfThisMachine());
-        selenideConfig.fileDownload(FileDownloadMode.PROXY);
-
-        URL selenoidURL = null;
-        try {
-            selenoidURL = new URL("http://localhost:4444/wd/hub");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
         var selenideDriver = new SelenideDriver(selenideConfig);
-
-    //    WebDriver driver = new RemoteWebDriver(selenoidURL, capabilities);
         WebDriverRunner.setWebDriver(selenideDriver.getAndCheckWebDriver());
-       // driver.get("https://www.saucedemo.com/");
 
     }
 
