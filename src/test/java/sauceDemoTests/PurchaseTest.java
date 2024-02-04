@@ -67,6 +67,6 @@ public class PurchaseTest {
     @Test(dependsOnMethods = "CheckoutTaxTest")
     public void FinalPageTest(){
         checkoutPage.clickFinishButton();
-        finishPage.waitForCompletion();
+        finishPage.waitForCompletion("Thank you for your order!");
     }
 }
