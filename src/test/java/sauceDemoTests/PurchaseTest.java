@@ -37,7 +37,7 @@ public class PurchaseTest {
 
     @BeforeTest
     public void setUpBrowser() throws MalformedURLException {
-        Browser.configSelenoid();
+         Browser.configSelenoid();
         // Browser.setBrowser();
     }
     @Test
@@ -49,10 +49,8 @@ public class PurchaseTest {
         productPage.addToCartWithPrice("$9.99");
         productPage.addToCartWithPrice("$7.99");
         productPage.openShoppingCart();
-        cartPage.verifyItem1Tittle("Sauce Labs Bike Light");
-        cartPage.verifyItem2Tittle("Sauce Labs Onesie");
-        cartPage.verifyItem1Price("$9.99");
-        cartPage.verifyItem2Price("$7.99");
+        cartPage.checkItemByPrice("$9.99");
+        cartPage.checkItemByPrice("$7.99");
         cartPage.clickCheckoutButton();
         informationPage.setFirstName("TestName");
         informationPage.setLastName("TestLastName");
