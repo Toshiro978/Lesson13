@@ -27,6 +27,7 @@ public class PurchaseTest {
     // private WebDriver driver;
 
     private final String homeUrl = "https://www.saucedemo.com/";
+
     LoginPage loginPage = new LoginPage();
     ProductPage productPage = new ProductPage();
     CartPage cartPage = new CartPage();
@@ -49,8 +50,9 @@ public class PurchaseTest {
 
     @Test(dependsOnMethods = "LoginTest")
     public void AddItemInCartTest() {
-        productPage.addToCartSauceLabsBikeLight();
-        productPage.addToCartSauceLabsOnesie();
+        productPage.addToCartWithPrice("$9.99");
+        productPage.addToCartWithPrice("$7.99");
+
     }
 
     @Test(dependsOnMethods = "AddItemInCartTest")
