@@ -38,54 +38,31 @@ public class PurchaseTest {
     @BeforeTest
     public void setUpBrowser() throws MalformedURLException {
         Browser.configSelenoid();
+        // Browser.setBrowser();
     }
-
     @Test
-    public void LoginTest() {
+    public void happyPathTest() {
         open(homeUrl);
         loginPage.setLogin("standard_user");
         loginPage.setPassword("secret_sauce");
         loginPage.clickLoginButton();
-    }
-
-    @Test(dependsOnMethods = "LoginTest")
-    public void AddItemInCartTest() {
         productPage.addToCartWithPrice("$9.99");
         productPage.addToCartWithPrice("$7.99");
-
-    }
-
-    @Test(dependsOnMethods = "AddItemInCartTest")
-    public void CartItemTest() {
         productPage.openShoppingCart();
         cartPage.verifyItem1Tittle("Sauce Labs Bike Light");
         cartPage.verifyItem2Tittle("Sauce Labs Onesie");
         cartPage.verifyItem1Price("$9.99");
         cartPage.verifyItem2Price("$7.99");
-    }
-
-    @Test(dependsOnMethods = "CartItemTest")
-    public void InformationPageTest() {
         cartPage.clickCheckoutButton();
         informationPage.setFirstName("TestName");
         informationPage.setLastName("TestLastName");
         informationPage.setPostalCode("11111");
-
-    }
-
-    @Test(dependsOnMethods = "InformationPageTest")
-    public void CheckoutTaxTest() {
         informationPage.clickContinueButton();
         checkoutPage.calculateTaxPercentage();
-
-    }
-
-    @Test(dependsOnMethods = "CheckoutTaxTest")
-    public void FinalPageTest() {
         checkoutPage.clickFinishButton();
         finishPage.waitForCompletion("Thank you for your order!");
-
     }
+
     @AfterTest
     public void CloseUpBrowser() {
         Browser.closeBrowser();
